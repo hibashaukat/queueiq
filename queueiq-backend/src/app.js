@@ -1,8 +1,14 @@
 const express = require('express');
 const supabase = require('./config/supabase');
+const authRoutes = require('./routes/auth.routes');
+
 require('dotenv').config();
 
 const app = express();
+
+// needed to parse JSON request bodies 
+app.use(express.json()); 
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.send('QueueIQ backend running');
