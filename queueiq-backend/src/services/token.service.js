@@ -1,6 +1,6 @@
 const supabase = require('../config/supabase');
 
-const NORMAL_MAX_PER_DAY = 700;
+const NORMAL_MAX_PER_DAY = 200;
 const EXPRESS_MAX_PER_DAY = 10;
 const EMERGENCY_MAX_PER_DAY = 10;
 
