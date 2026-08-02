@@ -1,5 +1,6 @@
 const supabase = require('../config/supabase');
 const {
+  NORMAL_MAX_PER_DAY, 
   EXPRESS_MAX_PER_DAY,
   EMERGENCY_MAX_PER_DAY,
   countTokensToday,
@@ -17,7 +18,16 @@ async function bookToken(req, res) {
   if (!['normal', 'express', 'emergency'].includes(token_type)) {
     return res.status(400).json({ error: 'token_type must be normal, express, or emergency' });
   }
+  try {
+    // Enforce daily limits
+    if (token_type === 'normal') {
+      const count = await countTokensToday(organization_id, 'normal');
+      if (count >= NORMAL_MAX_PER_DAY) {
+        return res.status(409).json({ error: `Normal token limit reached for today (${NORMAL_MAX_PER_DAY} max)` });
+      }
+    }
 
+    if (token_type === 'express') {
   try {
     // Enforce daily limits
     if (token_type === 'express') {
