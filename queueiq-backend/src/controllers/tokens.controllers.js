@@ -18,6 +18,7 @@ async function bookToken(req, res) {
   if (!['normal', 'express', 'emergency'].includes(token_type)) {
     return res.status(400).json({ error: 'token_type must be normal, express, or emergency' });
   }
+  
   try {
     // Enforce daily limits
     if (token_type === 'normal') {
@@ -27,9 +28,6 @@ async function bookToken(req, res) {
       }
     }
 
-    if (token_type === 'express') {
-  try {
-    // Enforce daily limits
     if (token_type === 'express') {
       const count = await countTokensToday(organization_id, 'express');
       if (count >= EXPRESS_MAX_PER_DAY) {
