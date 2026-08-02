@@ -1,5 +1,6 @@
 const supabase = require('../config/supabase');
 
+const NORMAL_MAX_PER_DAY = 100;
 const EXPRESS_MAX_PER_DAY = 10;
 const EMERGENCY_MAX_PER_DAY = 3;
 
@@ -33,7 +34,6 @@ async function calculateQueuePosition(organizationId, tokenType) {
   const currentQueueLength = existingTokens.length;
 
   if (tokenType === 'emergency') {
-    // Emergency goes before everything, position 0, others shift conceptually
     return 0;
   }
 
@@ -43,7 +43,6 @@ async function calculateQueuePosition(organizationId, tokenType) {
     return Math.min(expressSlot, currentQueueLength + 1);
   }
 
-  // Normal, goes to the back of the queue
   return currentQueueLength + 1;
 }
 
@@ -57,8 +56,6 @@ async function getTokenPrice(organizationId, tokenType) {
 
   if (error) throw new Error('Organization not found');
 
-  // For MVP, assume a base price field exists, or default
-  // pull actual normal_price from organizations table once added
   const basePrice = 800; 
 
   if (tokenType === 'express') return basePrice * 2;
@@ -66,6 +63,7 @@ async function getTokenPrice(organizationId, tokenType) {
 }
 
 module.exports = {
+  NORMAL_MAX_PER_DAY,
   EXPRESS_MAX_PER_DAY,
   EMERGENCY_MAX_PER_DAY,
   countTokensToday,
