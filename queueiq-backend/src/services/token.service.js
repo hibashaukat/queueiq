@@ -1,8 +1,8 @@
 const supabase = require('../config/supabase');
 
-const NORMAL_MAX_PER_DAY = 100;
+const NORMAL_MAX_PER_DAY = 700;
 const EXPRESS_MAX_PER_DAY = 10;
-const EMERGENCY_MAX_PER_DAY = 3;
+const EMERGENCY_MAX_PER_DAY = 10;
 
 // Count how many tokens of a type already exist today for this org
 async function countTokensToday(organizationId, tokenType) {
